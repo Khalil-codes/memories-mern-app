@@ -1,6 +1,7 @@
 {
     "compilerOptions": {
         /* Language and Environment */
+        "lib": ["ES6"],
         "target": "es2016",
 
         /* Modules */
@@ -18,6 +19,8 @@
         "strict": true,
 
         /* Completeness */
-        "skipLibCheck": true
+        "skipLibCheck": true,
+
+        "types": ["node"]
     }
 }
