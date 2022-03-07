@@ -22,7 +22,7 @@ app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 
 // Routes Middleware
-app.use("/api/memories", router);
+app.use("/api/posts", router);
 
 // Listen
 app.listen(PORT, () => console.log(`Server Started on port ${PORT}`));
