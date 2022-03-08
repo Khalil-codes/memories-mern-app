@@ -18,7 +18,11 @@ export const getPosts = async (req: Request, res: Response) => {
 };
 export const createPost = async (req: Request, res: Response) => {
     try {
-        const post: IPost = await Post.create(req.body);
+        const postData = {
+            ...req.body,
+            tags: req.body.tags.split(",").map((tag: string) => tag.trim()),
+        };
+        const post: IPost = await Post.create(postData);
         res.status(201).json({
             status: "success",
             data: {
