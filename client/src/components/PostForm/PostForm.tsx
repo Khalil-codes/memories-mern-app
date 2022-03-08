@@ -63,7 +63,7 @@ const PostForm: FC = () => {
         handleReset();
     };
     return (
-        <Card style={{ width: "95%", margin: "auto", padding: "20px" }}>
+        <Card style={{ padding: "20px" }}>
             <Card.Title>Add Post</Card.Title>
             <Card.Body>
                 <Card.Text>Please Fill the following fields</Card.Text>
