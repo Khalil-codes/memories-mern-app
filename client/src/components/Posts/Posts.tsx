@@ -21,7 +21,7 @@ const Posts = () => {
             <h1>Posts</h1>
             <Row>
                 {posts?.map((post) => (
-                    <Col lg={6} md={12} sm={12} key={post._id}>
+                    <Col lg={6} md={6} sm={12} key={post._id}>
                         <Post post={post} />
                     </Col>
                 ))}

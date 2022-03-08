@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { deletePost } from "../../../redux/postSlice";
+import { deletePost, likePost } from "../../../redux/postSlice";
 import { IPost } from "../../../types";
 import PostAction from "./PostAction";
 import PostBadges from "./PostBadges";
@@ -18,21 +18,40 @@ const Post: FC<Props> = ({ post }) => {
         try {
             dispatch(deletePost(post._id));
         } catch (error: any) {
-            console.log(error.message, "here");
+            console.log(error.message);
+        }
+    };
+    const handleLike = () => {
+        console.log(post._id, "Called");
+        try {
+            dispatch(likePost(post._id));
+        } catch (error) {
+            console.log(error);
         }
     };
     return (
         <Card>
-            <Card.Img variant="top" src={post.selectedFile} />
-            <PostOverlay
-                title={post.title}
-                creator={post.creator}
-                createdAt={post.createdAt}
+            <Card.Img
+                variant="top"
+                src={post.selectedFile}
+                style={{ height: "190px", objectFit: "cover" }}
             />
+            <PostOverlay creator={post.creator} createdAt={post.createdAt} />
             <Card.Body style={{ zIndex: 10 }}>
                 <PostBadges tags={post.tags} />
+                <Card.Title
+                    style={{
+                        fontWeight: 400,
+                        marginTop: "10px",
+                    }}>
+                    {post.title}
+                </Card.Title>
                 <Card.Text>{post.message}</Card.Text>
-                <PostAction handleDelete={handleDelete} />
+                <PostAction
+                    handleDelete={handleDelete}
+                    handleLike={handleLike}
+                    likeCount={post.likeCount}
+                />
             </Card.Body>
         </Card>
     );
