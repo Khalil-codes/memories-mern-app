@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, FormEvent, useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { createPost } from "../../redux/postSlice";
@@ -19,6 +19,8 @@ const convertBase64 = (file: File) => {
 
 const PostForm: FC = () => {
     const dispatch = useDispatch();
+    const [img, setImg] = useState<string>("");
+    const [isFilled, setIsFilled] = useState<boolean>(false);
     const [postData, setPostData] = useState<IPostClient>({
         creator: "",
         title: "",
@@ -26,6 +28,16 @@ const PostForm: FC = () => {
         tags: "",
         selectedFile: "",
     });
+    useEffect(() => {
+        if (
+            postData.creator &&
+            postData.message &&
+            postData.tags &&
+            postData.title &&
+            postData.selectedFile
+        )
+            setIsFilled(true);
+    }, [postData]);
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         setPostData((prev) => ({
             ...prev,
@@ -34,7 +46,7 @@ const PostForm: FC = () => {
     };
     const handleFileUpload = async (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files;
-
+        setImg(e.target.value);
         if (file && file[0]) {
             const base64 = await convertBase64(file[0]);
             setPostData((prev) => ({
@@ -51,15 +63,16 @@ const PostForm: FC = () => {
             tags: "",
             selectedFile: "",
         });
+        setIsFilled(false);
     };
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = (e: FormEvent<HTMLElement>) => {
         e.preventDefault();
         try {
             dispatch(createPost(postData));
         } catch (error: any) {
             console.log(error);
         }
-
+        setImg("");
         handleReset();
     };
     return (
@@ -120,11 +133,15 @@ const PostForm: FC = () => {
                             name="selectedFile"
                             multiple={false}
                             accept="image/png, image/jpg, image/jpeg"
+                            value={img}
                             onChange={handleFileUpload}
                         />
                     </Form.Group>
 
-                    <Button variant="primary" type="submit">
+                    <Button
+                        variant="primary"
+                        type="submit"
+                        disabled={!isFilled}>
                         Submit
                     </Button>
                     <Button
