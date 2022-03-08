@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { IPost } from "../types/posts";
 import Post from "../models/postModel";
+import mongoose from "mongoose";
 
 export const getPosts = async (req: Request, res: Response) => {
     try {
@@ -66,12 +67,36 @@ export const deletePost = async (req: Request, res: Response) => {
             res.status(404).json({ status: "fail", message: "Post not Found" });
         }
         await Post.findByIdAndDelete(req.params.id);
-        res.status(201).json({
+        console.log(req.params.id);
+        res.status(200).json({
             status: "success",
             data: {
-                _id: req.params.id,
+                id: req.params.id,
             },
         });
+    } catch (error: any) {
+        res.status(404).json({ status: "fail", message: error.message });
+    }
+};
+
+export const likePost = async (req: Request, res: Response) => {
+    try {
+        const post = await Post.findById(req.params.id);
+        if (!post) {
+            res.status(404).json({ status: "fail", message: "Post not Found" });
+        } else {
+            const updatedPost = await Post.findByIdAndUpdate(
+                req.params.id,
+                { likeCount: post?.likeCount + 1 },
+                { new: true }
+            );
+            res.status(201).json({
+                status: "success",
+                data: {
+                    post: updatedPost,
+                },
+            });
+        }
     } catch (error: any) {
         res.status(404).json({ status: "fail", message: error.message });
     }
