@@ -2,5 +2,5 @@
     --bs-gutter-y: 1.5rem;
 }
 .card-img-top {
-    filter: brightness(0.8);
+    filter: brightness(0.65);
 }
