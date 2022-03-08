@@ -17,3 +17,6 @@ export const updatePost = (id: string, updatedPostData: IPostClient) => {
 
 // Delete Post
 export const deletePost = (id: string) => axios.delete(`${url}/${id}`);
+
+// Like Post
+export const likePost = (id: string) => axios.patch(`${url}/${id}/like`);
