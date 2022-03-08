@@ -13,6 +13,23 @@ export const createPost = createAsyncThunk(
         return data.data.post;
     }
 );
+export const updatePost = createAsyncThunk(
+    "post/update",
+    async (details: { id: string; updatedPostData: IPostClient }) => {
+        const { data } = await api.updatePost(
+            details.id,
+            details.updatedPostData
+        );
+        return { id: details.id, updatedPost: data.data.post };
+    }
+);
+export const deletePost = createAsyncThunk(
+    "post/delete",
+    async (id: string) => {
+        const { data } = await api.deletePost(id);
+        return data.data._id;
+    }
+);
 const initialState: IReduxInitialState = {
     posts: [],
     loading: false,
@@ -45,6 +62,26 @@ export const postSlice = createSlice({
                 (state, action: PayloadAction<IPost>) => {
                     state.posts?.push(action.payload);
                     state.loading = false;
+                }
+            )
+            .addCase(
+                updatePost.fulfilled,
+                (
+                    state,
+                    action: PayloadAction<{ id: string; updatedPost: IPost }>
+                ) => {
+                    console.log(action.payload.updatedPost);
+                    state.posts?.map((post) =>
+                        post._id === action.payload.id
+                            ? action.payload.updatedPost
+                            : post
+                    );
+                }
+            )
+            .addCase(
+                deletePost.fulfilled,
+                (state, action: PayloadAction<string>) => {
+                    state.posts?.filter((post) => post._id !== action.payload);
                 }
             );
     },
