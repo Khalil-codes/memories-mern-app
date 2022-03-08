@@ -27,9 +27,14 @@ export const deletePost = createAsyncThunk(
     "post/delete",
     async (id: string) => {
         const { data } = await api.deletePost(id);
-        return data.data._id;
+        return data.data.id;
     }
 );
+
+export const likePost = createAsyncThunk("post/like", async (id: string) => {
+    const { data } = await api.likePost(id);
+    return data.data.post;
+});
 const initialState: IReduxInitialState = {
     posts: [],
     loading: false,
@@ -71,7 +76,7 @@ export const postSlice = createSlice({
                     action: PayloadAction<{ id: string; updatedPost: IPost }>
                 ) => {
                     console.log(action.payload.updatedPost);
-                    state.posts?.map((post) =>
+                    state.posts = state.posts?.map((post) =>
                         post._id === action.payload.id
                             ? action.payload.updatedPost
                             : post
@@ -81,9 +86,17 @@ export const postSlice = createSlice({
             .addCase(
                 deletePost.fulfilled,
                 (state, action: PayloadAction<string>) => {
-                    state.posts?.filter((post) => post._id !== action.payload);
+                    console.log(action.payload);
+                    state.posts = state.posts?.filter(
+                        (post) => post._id !== action.payload
+                    );
                 }
-            );
+            )
+            .addCase(likePost.fulfilled, (state, action) => {
+                state.posts = state.posts?.map((post) =>
+                    post._id === action.payload._id ? action.payload : post
+                );
+            });
     },
 });
 
