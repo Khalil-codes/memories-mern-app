@@ -1,12 +1,11 @@
 import React, { useEffect } from "react";
+import { Col, Row, Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { getPosts } from "../../redux/postSlice";
 import { usePosts } from "../../redux/store";
 import Post from "./Post/Post";
 
-type Props = {};
-
-const Posts = (props: Props) => {
+const Posts = () => {
     const { posts, loading, error } = usePosts();
     const dispatch = useDispatch();
     useEffect(() => {
@@ -15,14 +14,18 @@ const Posts = (props: Props) => {
         };
         unsub();
     }, [dispatch]);
-    console.log(posts);
-    if (loading) return <div>Loading...</div>;
+    if (loading) return <Spinner animation="border" />;
     if (error) return <div>Somthing went wrong...</div>;
     return (
         <>
             <h1>Posts</h1>
-
-            <Post />
+            <Row>
+                {posts?.map((post) => (
+                    <Col lg={6} md={12} sm={12} key={post._id}>
+                        <Post post={post} />
+                    </Col>
+                ))}
+            </Row>
         </>
     );
 };
