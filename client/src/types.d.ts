@@ -21,3 +21,21 @@ export interface IReduxInitialState {
     loading: boolean;
     error: boolean;
 }
+
+export interface IGoogleUser {
+    googleId: string;
+    imageUrl: string;
+    email: string;
+    name: string;
+    givenName: string;
+    familyName: string;
+}
+
+export interface INormalUser {
+    _Id: string;
+    imageUrl: string;
+    email: string;
+    name: string;
+    firstName: string;
+    lastName: string;
+}
