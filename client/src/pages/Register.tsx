@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
-import { Button, Card, Form, Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import { Button, Card, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import FormInput from "../components/UI/FormInput";
 
 type Props = {};
 
@@ -26,51 +26,43 @@ const Register: FC<Props> = (props) => {
                 className="auth-form"
                 autoComplete="false"
                 onSubmit={handleSubmit}>
-                <Form.Group className="mb-3">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Enter Name"
-                        value={name}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setName(e.target.value)
-                        }
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Enter email"
-                        value={email}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setEmail(e.target.value)
-                        }
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setPassword(e.target.value)
-                        }
-                    />
-                </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Confirm Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Confirm Password"
-                        value={password2}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                            setPassword2(e.target.value)
-                        }
-                    />
-                    <Form.Text>Re-enter your password to confirm</Form.Text>
-                </Form.Group>
+                <FormInput
+                    label="Name"
+                    type="text"
+                    placeholder="Enter Name"
+                    value={name}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setName(e.target.value)
+                    }
+                />
+                <FormInput
+                    label="Email Address"
+                    type="email"
+                    placeholder="Enter email"
+                    value={email}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setEmail(e.target.value)
+                    }
+                />
+                <FormInput
+                    label="Password"
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPassword(e.target.value)
+                    }
+                />
+                <FormInput
+                    label="Confirm Password"
+                    type="password"
+                    placeholder="Confirm Password"
+                    value={password2}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                        setPassword2(e.target.value)
+                    }
+                    helpText="Re-enter your password to confirm"
+                />
                 <Button variant="primary" type="submit" disabled={!isFilled}>
                     Submit
                 </Button>
