@@ -1,27 +1,21 @@
 import React, { FC } from "react";
 import { Col, Container, Navbar, Row } from "react-bootstrap";
-import PostForm from "./components/PostForm/PostForm";
-import Posts from "./components/Posts/Posts";
+import { Route, Routes } from "react-router-dom";
+import Header from "./components/Header/Header";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const App: FC = () => {
     return (
         <>
-            <Navbar bg="dark" variant="dark">
-                <Container>
-                    <Navbar.Brand className="mx-auto">
-                        <h1>Memories</h1>
-                    </Navbar.Brand>
-                </Container>
-            </Navbar>
-            <Container className="mt-3">
-                <Row xs={1} md={1} lg={1}>
-                    <Col lg={7}>
-                        <Posts />
-                    </Col>
-                    <Col lg={5}>
-                        <PostForm />
-                    </Col>
-                </Row>
+            <Header />
+            <Container>
+                <Routes>
+                    <Route path="/" element={<Dashboard />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                </Routes>
             </Container>
         </>
     );
