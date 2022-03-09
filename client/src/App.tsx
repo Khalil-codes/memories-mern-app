@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Col, Container, Navbar, Row } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Dashboard from "./pages/Dashboard";
