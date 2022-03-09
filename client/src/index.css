@@ -4,3 +4,23 @@
 .card-img-top {
     filter: brightness(0.65);
 }
+.auth-form-container {
+    height: calc(100vh - 84px);
+    border: none;
+}
+.auth-form {
+    padding: 20px;
+    width: 60%;
+}
+
+@media (max-width: 800px) {
+    .auth-form {
+        width: 80%;
+    }
+}
+
+@media (max-width: 500px) {
+    .auth-form {
+        width: 100%;
+    }
+}
