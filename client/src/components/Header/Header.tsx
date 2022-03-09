@@ -1,12 +1,23 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import Avatar from "react-avatar";
+import { useAuth } from "../../redux/store";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/authSlice";
 
 type Props = {};
 
 const Header: FC<Props> = (props) => {
-    const [user, setUser] = useState(true);
+    const dispatch = useDispatch();
+    const { user } = useAuth();
+    const handleLogout = () => {
+        try {
+            dispatch(logoutUser());
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <Navbar bg="dark" variant="dark">
             <Container>
@@ -21,19 +32,29 @@ const Header: FC<Props> = (props) => {
                         {user ? (
                             <>
                                 <div className="user-info me-4 d-flex justify-content-center align-items-center h-100">
-                                    <Avatar
-                                        name="Khalil Patiwala"
-                                        size="30"
-                                        round={true}
-                                        textSizeRatio={1.5}
-                                    />
+                                    {user?.user?.imageUrl ? (
+                                        <img
+                                            src={user.user.imageUrl}
+                                            alt="user-img"
+                                            width={40}
+                                            height={40}
+                                            style={{ borderRadius: "50%" }}
+                                        />
+                                    ) : (
+                                        <Avatar
+                                            name={user?.user?.name}
+                                            size="40"
+                                            round={true}
+                                            textSizeRatio={1.5}
+                                        />
+                                    )}
                                     <Navbar.Text className="ms-2">
-                                        Khalil Patiwala
+                                        {user?.user?.name}
                                     </Navbar.Text>
                                 </div>
                                 <Nav.Link
                                     className="btn btn-light text-dark"
-                                    onClick={() => setUser(false)}>
+                                    onClick={handleLogout}>
                                     Logout
                                 </Nav.Link>
                             </>
@@ -45,12 +66,6 @@ const Header: FC<Props> = (props) => {
                                 <LinkContainer to="/register">
                                     <Nav.Link>Register</Nav.Link>
                                 </LinkContainer>
-
-                                <Nav.Link
-                                    className="btn btn-light text-dark"
-                                    onClick={() => setUser(true)}>
-                                    Login
-                                </Nav.Link>
                             </>
                         )}
                     </Nav>
