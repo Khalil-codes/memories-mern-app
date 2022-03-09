@@ -8,6 +8,7 @@ import GoogleButton from "../UI/GoogleButton";
 interface props {}
 
 const GoogleAuth: FC<props> = (props) => {
+    const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID as string;
     const responseGoogleSuccess = async (
         response: GoogleLoginResponse | GoogleLoginResponseOffline
     ) => {
@@ -26,7 +27,7 @@ const GoogleAuth: FC<props> = (props) => {
     };
     return (
         <GoogleLogin
-            clientId="800517765083-fna1h08tal5cb2dgvfkb16f73ars9j8o.apps.googleusercontent.com"
+            clientId={clientId}
             render={(renderProps) => (
                 <GoogleButton
                     onClick={renderProps.onClick}
