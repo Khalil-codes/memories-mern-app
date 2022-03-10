@@ -32,10 +32,25 @@ export interface IGoogleUser {
 }
 
 export interface INormalUser {
-    _Id: string;
-    imageUrl: string;
+    _id: string;
+    imageUrl?: string;
+
     email: string;
     name: string;
     firstName: string;
     lastName: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface ICred {
+    email: string;
+    password: string;
+}
+
+export interface IUserData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
 }
