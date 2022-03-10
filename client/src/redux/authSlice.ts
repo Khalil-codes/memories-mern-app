@@ -1,24 +1,53 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { IGoogleUser, INormalUser } from "../types";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import * as api from "../api";
+import { ICred, IGoogleUser, INormalUser, IUserData } from "../types";
 
-export const loginUser = createAsyncThunk(
-    "user/login",
-    async ({
-        result,
-        token,
-        loginType,
-    }: {
-        result: IGoogleUser;
-        token: string;
-        loginType: "Google" | "Email & Password";
-    }) => {
-        if (loginType === "Google") {
-            localStorage.setItem(
-                "user",
-                JSON.stringify({ user: result, token })
-            );
+export const registerUser = createAsyncThunk(
+    "user/register",
+    async (userData: IUserData) => {
+        try {
+            const {
+                status,
+                data: {
+                    data: { user, token },
+                },
+            } = await api.registerUser(userData);
+            if (status === 201) {
+                localStorage.setItem("user", JSON.stringify({ user, token }));
+                return { user, token };
+            }
+        } catch (error: any) {
+            console.log(error);
+            return error.message;
         }
+    }
+);
+
+export const loginGoogleUser = createAsyncThunk(
+    "user/google/login",
+    async ({ result, token }: { result: IGoogleUser; token: string }) => {
+        localStorage.setItem("user", JSON.stringify({ user: result, token }));
         return { user: result, token: token };
+    }
+);
+export const loginNormalUser = createAsyncThunk(
+    "user/normal/login",
+    async (credentials: ICred) => {
+        try {
+            const {
+                status,
+                data: {
+                    data: { user, token },
+                },
+            } = await api.loginUser(credentials);
+            if (status === 201) {
+                localStorage.setItem("user", JSON.stringify({ user, token }));
+                return { user, token };
+            }
+        } catch (error: any) {
+            console.log(error);
+            return error.message;
+        }
     }
 );
 
@@ -31,17 +60,13 @@ interface IUserState {
     token: string;
 }
 interface IAuthInitialState {
-    user?: IUserState | null;
-    loading: boolean;
-    error: boolean;
+    user: IUserState | null;
 }
 
 const potentialUser = JSON.parse(localStorage.getItem("user") as string);
 
 const initialState: IAuthInitialState = {
     user: potentialUser ? potentialUser : null,
-    loading: false,
-    error: false,
 };
 
 const authSlice = createSlice({
@@ -52,21 +77,30 @@ const authSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(loginUser.pending, (state) => {
-                state.loading = true;
-                state.error = false;
-            })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginGoogleUser.fulfilled, (state, action) => {
                 state.user = action.payload;
-                state.loading = false;
-            })
-            .addCase(loginUser.rejected, (state) => {
-                state.error = true;
             })
             .addCase(logoutUser.fulfilled, (state) => {
-                state.loading = false;
                 state.user = null;
-            });
+            })
+            .addCase(
+                registerUser.fulfilled,
+                (
+                    state,
+                    action: PayloadAction<{ user: INormalUser; token: string }>
+                ) => {
+                    state.user = action.payload;
+                }
+            )
+            .addCase(
+                loginNormalUser.fulfilled,
+                (
+                    state,
+                    action: PayloadAction<{ user: INormalUser; token: string }>
+                ) => {
+                    state.user = action.payload;
+                }
+            );
     },
 });
 
