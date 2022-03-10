@@ -4,7 +4,7 @@ import GoogleLogin, {
     GoogleLoginResponseOffline,
 } from "react-google-login";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/authSlice";
+import { loginGoogleUser } from "../../redux/authSlice";
 import { IGoogleUser } from "../../types";
 import GoogleButton from "../UI/GoogleButton";
 
@@ -29,7 +29,7 @@ const GoogleAuth: FC<props> = (props) => {
             token = response.tokenId;
         }
         try {
-            dispatch(loginUser({ result, token, loginType: "Google" }));
+            dispatch(loginGoogleUser({ result, token }));
         } catch (error: any) {
             console.log(error);
         }
