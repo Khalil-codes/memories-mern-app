@@ -7,7 +7,8 @@ import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import connectDB from "./config/db";
-import router from "./routes/postsRoutes";
+import postRouter from "./routes/postsRoutes";
+import userRouter from "./routes/userRoutes";
 
 // Connecting to MongoDB
 connectDB();
@@ -22,7 +23,8 @@ app.use(express.json({ limit: "30mb" }));
 app.use(express.urlencoded({ extended: true, limit: "30mb" }));
 
 // Routes Middleware
-app.use("/api/posts", router);
+app.use("/api/posts", postRouter);
+app.use("/api/user", userRouter);
 
 // Listen
 app.listen(PORT, () => console.log(`Server Started on port ${PORT}`));
