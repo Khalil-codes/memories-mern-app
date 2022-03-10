@@ -1,11 +1,14 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import GoogleAuth from "../components/GoogleAuth/GoogleAuth";
 import FormInput from "../components/UI/FormInput";
+import { loginNormalUser } from "../redux/authSlice";
 type Props = {};
 
 const Login: FC<Props> = (props) => {
+    const dispatch = useDispatch();
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [isFilled, setIsFilled] = useState(false);
@@ -15,7 +18,7 @@ const Login: FC<Props> = (props) => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(email, password);
+        dispatch(loginNormalUser({ email, password }));
     };
 
     return (

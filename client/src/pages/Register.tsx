@@ -1,11 +1,14 @@
 import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import FormInput from "../components/UI/FormInput";
+import { registerUser } from "../redux/authSlice";
 
 type Props = {};
 
 const Register: FC<Props> = (props) => {
+    const dispatch = useDispatch();
     const [name, setName] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
@@ -18,7 +21,13 @@ const Register: FC<Props> = (props) => {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(email, password, name);
+        const userData = {
+            email,
+            password,
+            firstName: name.split(" ")[0],
+            lastName: name.split(" ")[1],
+        };
+        dispatch(registerUser(userData));
     };
     return (
         <Card className="d-flex justify-content-center align-items-center auth-form-container">
