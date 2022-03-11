@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IPost } from "../types/posts";
+import { IPost } from "../@types/posts";
 import Post from "../models/postModel";
 import mongoose from "mongoose";
 
@@ -80,6 +80,7 @@ export const deletePost = async (req: Request, res: Response) => {
 };
 
 export const likePost = async (req: Request, res: Response) => {
+    console.log(req);
     try {
         const post = await Post.findById(req.params.id);
         if (!post) {
