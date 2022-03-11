@@ -1,4 +1,12 @@
 {
+    "extends": "ts-node/node12/tsconfig.json",
+    /* Emit */
+    "ts-node": {
+        // It is faster to skip typechecking.
+        // Remove if you want ts-node to do typechecking.
+        "transpileOnly": true,
+        "files": true
+    },
     "compilerOptions": {
         /* Language and Environment */
         "lib": ["ES6"],
@@ -8,7 +16,6 @@
         "module": "commonjs",
         "rootDir": "src",
 
-        /* Emit */
         "outDir": "dist/js",
 
         /* Interop Constraints */
@@ -21,6 +28,7 @@
         /* Completeness */
         "skipLibCheck": true,
 
-        "types": ["node"]
+        "types": ["node", "express"],
+        "typeRoots": ["./@types", "./node_modules/@types"]
     }
 }
