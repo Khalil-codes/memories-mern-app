@@ -10,7 +10,7 @@ const Posts = () => {
     const dispatch = useDispatch();
     useEffect(() => {
         const unsub = () => {
-            dispatch(getPosts());
+            dispatch(getPosts(null));
         };
         unsub();
     }, [dispatch]);

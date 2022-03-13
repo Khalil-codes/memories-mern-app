@@ -3,11 +3,11 @@ import React, { FC } from "react";
 import { Card } from "react-bootstrap";
 
 type Props = {
-    creator: string;
+    author: string;
     createdAt: Date;
 };
 
-const PostOverlay: FC<Props> = ({ creator, createdAt }) => {
+const PostOverlay: FC<Props> = ({ author, createdAt }) => {
     return (
         <Card.ImgOverlay>
             <Card.Title
@@ -15,7 +15,7 @@ const PostOverlay: FC<Props> = ({ creator, createdAt }) => {
                     color: "#fff",
                     fontWeight: 400,
                 }}>
-                {creator}
+                {author}
             </Card.Title>
             <Card.Subtitle
                 style={{

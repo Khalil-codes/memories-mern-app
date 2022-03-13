@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, FormEvent, useEffect, useState } from "react";
 import { Button, Card, Form } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { createPost } from "../../redux/postSlice";
+import { useAuth } from "../../redux/store";
 import { IPostClient } from "../../types";
 
 const convertBase64 = (file: File) => {
@@ -18,11 +19,11 @@ const convertBase64 = (file: File) => {
 };
 
 const PostForm: FC = () => {
+    const { user } = useAuth();
     const dispatch = useDispatch();
     const [img, setImg] = useState<string>("");
     const [isFilled, setIsFilled] = useState<boolean>(false);
     const [postData, setPostData] = useState<IPostClient>({
-        creator: "",
         title: "",
         message: "",
         tags: "",
@@ -30,7 +31,6 @@ const PostForm: FC = () => {
     });
     useEffect(() => {
         if (
-            postData.creator &&
             postData.message &&
             postData.tags &&
             postData.title &&
@@ -57,7 +57,6 @@ const PostForm: FC = () => {
     };
     const handleReset = () => {
         setPostData({
-            creator: "",
             title: "",
             message: "",
             tags: "",
@@ -68,7 +67,7 @@ const PostForm: FC = () => {
     const handleSubmit = (e: FormEvent<HTMLElement>) => {
         e.preventDefault();
         try {
-            dispatch(createPost(postData));
+            dispatch(createPost({ ...postData }));
         } catch (error: any) {
             console.log(error);
         }
@@ -81,18 +80,6 @@ const PostForm: FC = () => {
             <Card.Body>
                 <Card.Text>Please Fill the following fields</Card.Text>
                 <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
-                        <Form.Label>Creator</Form.Label>
-                        <Form.Control
-                            name="creator"
-                            type="text"
-                            placeholder="Enter Creator Name..."
-                            value={postData.creator}
-                            onChange={handleChange}
-                            required
-                        />
-                    </Form.Group>
-
                     <Form.Group className="mb-3">
                         <Form.Label>Title:</Form.Label>
                         <Form.Control

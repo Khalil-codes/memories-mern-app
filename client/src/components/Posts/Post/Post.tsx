@@ -36,7 +36,7 @@ const Post: FC<Props> = ({ post }) => {
                 src={post.selectedFile}
                 style={{ height: "190px", objectFit: "cover" }}
             />
-            <PostOverlay creator={post.creator} createdAt={post.createdAt} />
+            <PostOverlay author={post.author} createdAt={post.createdAt} />
             <Card.Body style={{ zIndex: 10 }}>
                 <PostBadges tags={post.tags} />
                 <Card.Title
