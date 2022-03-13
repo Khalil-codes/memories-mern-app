@@ -24,3 +24,37 @@
         width: 100%;
     }
 }
+
+.or-separator {
+    position: relative;
+    width: 80%;
+    margin: auto;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+.or-separator::before,
+.or-separator::after {
+    position: absolute;
+    width: 46%;
+    height: 1px;
+    top: 25px;
+    background-color: #aaa;
+    content: "";
+}
+
+.or-separator::before {
+    left: 0;
+}
+
+.or-separator::after {
+    right: 0;
+}
+.google-signin-button {
+    background: transparent;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
