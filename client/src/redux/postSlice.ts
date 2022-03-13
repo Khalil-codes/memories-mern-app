@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import * as api from "../api";
 import { IPost, IPostClient, IReduxInitialState } from "../types";
+import { RootState } from "./store";
 
-export const getPosts = createAsyncThunk("post/getAll", async () => {
-    const { data } = await api.getPosts();
-    return data.data.posts;
-});
+export const getPosts = createAsyncThunk<any, null, { state: RootState }>(
+    "post/getAll",
+    async (_, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user?.token;
+        const { data } = await api.getPosts(token as string);
+        return data.data.posts;
+    }
+);
 export const createPost = createAsyncThunk(
     "post/create",
     async (postData: IPostClient) => {
@@ -15,7 +20,7 @@ export const createPost = createAsyncThunk(
 );
 export const updatePost = createAsyncThunk(
     "post/update",
-    async (details: { id: string; updatedPostData: IPostClient }) => {
+    async (details: { id: string; updatedPostData: IPostClient }, thunkAPI) => {
         const { data } = await api.updatePost(
             details.id,
             details.updatedPostData
@@ -25,16 +30,20 @@ export const updatePost = createAsyncThunk(
 );
 export const deletePost = createAsyncThunk(
     "post/delete",
-    async (id: string) => {
+    async (id: string, thunkAPI) => {
         const { data } = await api.deletePost(id);
         return data.data.id;
     }
 );
 
-export const likePost = createAsyncThunk("post/like", async (id: string) => {
-    const { data } = await api.likePost(id);
-    return data.data.post;
-});
+export const likePost = createAsyncThunk<any, string, { state: RootState }>(
+    "post/like",
+    async (id: string, thunkAPI) => {
+        const token = thunkAPI.getState().auth.user?.token;
+        const { data } = await api.likePost(id, token as string);
+        return data.data.post;
+    }
+);
 const initialState: IReduxInitialState = {
     posts: [],
     loading: false,
