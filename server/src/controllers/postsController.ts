@@ -23,7 +23,10 @@ export const createPost = async (req: Request, res: Response) => {
             ...req.body,
             tags: req.body.tags.split(",").map((tag: string) => tag.trim()),
         };
-        const post: IPost = await Post.create(postData);
+        const post: IPost = await Post.create({
+            ...postData,
+            creator: req.user._id,
+        });
         res.status(201).json({
             status: "success",
             data: {
@@ -80,15 +83,30 @@ export const deletePost = async (req: Request, res: Response) => {
 };
 
 export const likePost = async (req: Request, res: Response) => {
-    console.log(req);
     try {
+        if (!req.user)
+            return res
+                .status(404)
+                .json({ status: "fail", message: "Unauthorized Action" });
         const post = await Post.findById(req.params.id);
         if (!post) {
             res.status(404).json({ status: "fail", message: "Post not Found" });
         } else {
+            const index = post.likes.findIndex(
+                (id: string) => id === String(req.user._id)
+            );
+            if (index === -1) {
+                // Like Post
+                post.likes.push(req.user._id);
+            } else {
+                // Dislike Post
+                post.likes = post.likes.filter(
+                    (id: string) => id !== String(req.user._id)
+                );
+            }
             const updatedPost = await Post.findByIdAndUpdate(
                 req.params.id,
-                { likeCount: post?.likeCount + 1 },
+                post,
                 { new: true }
             );
             res.status(201).json({

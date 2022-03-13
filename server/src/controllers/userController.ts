@@ -27,7 +27,11 @@ export const registerUser = async (req: Request, res: Response) => {
     if (user) {
         res.status(201).json({
             status: "success",
-            data: { user, token: generateToken(user._id) },
+            data: {
+                ...user,
+                password: undefined,
+                token: generateToken(user._id),
+            },
         });
     } else {
         res.status(404).json({
