@@ -1,10 +1,13 @@
 export interface IPost {
+    userId: string;
     id: string;
     title: string;
     message: string;
-    creator: string;
+    author: string;
+    authorId: string;
     tags: string[];
     selectedFile: string;
+    likes: string[];
     likeCount: number;
     createdAt: Date;
     updatedAt: Date;

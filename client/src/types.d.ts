@@ -2,9 +2,11 @@ export interface IPost {
     _id: string;
     title: string;
     message: string;
-    creator: string;
+    author: string;
+    authorId: string;
     tags: string[];
     selectedFile: string;
+    likes: string[];
     likeCount: number;
     createdAt: Date;
     updatedAt: Date;
@@ -12,9 +14,10 @@ export interface IPost {
 export interface IPostClient {
     title: string;
     message: string;
-    creator: string;
     tags: string;
     selectedFile: string;
+    author?: string;
+    authorId?: string;
 }
 export interface IReduxInitialState {
     posts?: IPost[];
