@@ -56,6 +56,7 @@ const Post: FC<Props> = ({ post }) => {
                     handleLike={handleLike}
                     likeCount={post.likes.length}
                     userLiked={userLiked()}
+                    userPost={post.authorId === user?.user._id}
                 />
             </Card.Body>
         </Card>

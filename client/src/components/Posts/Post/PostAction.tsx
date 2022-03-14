@@ -5,6 +5,7 @@ import { FaEdit, FaThumbsUp, FaTrash } from "react-icons/fa";
 type Props = {
     likeCount: number;
     userLiked: boolean;
+    userPost: boolean;
     handleDelete: () => void;
     handleLike: () => void;
 };
@@ -40,20 +41,23 @@ const PostAction: FC<Props> = ({
     handleLike,
     likeCount,
     userLiked,
+    userPost,
 }) => {
     return (
         <Row>
             <Col xs={6}>
                 {renderLikeButton(likeCount, userLiked, handleLike)}
             </Col>
-            <Col xs={6} className="text-end">
-                <Button variant="warning" className="me-1">
-                    <FaEdit />
-                </Button>
-                <Button variant="danger" onClick={handleDelete}>
-                    <FaTrash />
-                </Button>
-            </Col>
+            {userPost ? (
+                <Col xs={6} className="text-end">
+                    <Button variant="warning" className="me-1">
+                        <FaEdit />
+                    </Button>
+                    <Button variant="danger" onClick={handleDelete}>
+                        <FaTrash />
+                    </Button>
+                </Col>
+            ) : null}
         </Row>
     );
 };
