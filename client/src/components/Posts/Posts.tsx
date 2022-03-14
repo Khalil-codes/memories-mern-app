@@ -15,16 +15,20 @@ const Posts = () => {
         unsub();
     }, [dispatch]);
     if (loading) return <Spinner animation="border" />;
-    if (error) return <div>Somthing went wrong...</div>;
+    if (error) return <h4>Somthing went wrong...</h4>;
     return (
         <>
             <h1>Posts</h1>
             <Row>
-                {posts?.map((post) => (
-                    <Col lg={6} md={6} sm={12} key={post._id}>
-                        <Post post={post} />
-                    </Col>
-                ))}
+                {posts?.length === 0 ? (
+                    <h4>No Post Available. Please Add One</h4>
+                ) : (
+                    posts?.map((post) => (
+                        <Col lg={6} md={6} sm={12} key={post._id}>
+                            <Post post={post} />
+                        </Col>
+                    ))
+                )}
             </Row>
         </>
     );

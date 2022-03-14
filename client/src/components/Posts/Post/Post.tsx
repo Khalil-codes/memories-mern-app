@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import { Card } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { deletePost, likePost } from "../../../redux/postSlice";
+import { useAuth } from "../../../redux/store";
 import { IPost } from "../../../types";
 import PostAction from "./PostAction";
 import PostBadges from "./PostBadges";
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const Post: FC<Props> = ({ post }) => {
+    const { user } = useAuth();
     const dispatch = useDispatch();
     const handleDelete = () => {
         console.log(post._id);
@@ -22,13 +24,15 @@ const Post: FC<Props> = ({ post }) => {
         }
     };
     const handleLike = () => {
-        console.log(post._id, "Called");
         try {
             dispatch(likePost(post._id));
         } catch (error) {
             console.log(error);
         }
     };
+    const userLiked = () =>
+        post.likes.find((like) => like === user?.user._id) ? true : false;
+
     return (
         <Card>
             <Card.Img
@@ -50,7 +54,8 @@ const Post: FC<Props> = ({ post }) => {
                 <PostAction
                     handleDelete={handleDelete}
                     handleLike={handleLike}
-                    likeCount={post.likeCount}
+                    likeCount={post.likes.length}
+                    userLiked={userLiked()}
                 />
             </Card.Body>
         </Card>
