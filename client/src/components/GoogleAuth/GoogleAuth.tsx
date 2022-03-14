@@ -24,6 +24,7 @@ const GoogleAuth: FC<props> = (props) => {
         let token: string = "";
         if ("profileObj" in response) {
             result = response.profileObj;
+            result._id = response.profileObj.googleId;
         }
         if ("tokenId" in response) {
             token = response.tokenId;

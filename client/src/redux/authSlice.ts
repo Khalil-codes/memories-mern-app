@@ -13,6 +13,9 @@ export const registerUser = createAsyncThunk(
                 },
             } = await api.registerUser(userData);
             if (status === 201) {
+                delete user.password;
+                delete user.createdAt;
+                delete user.updatedAt;
                 localStorage.setItem("user", JSON.stringify({ user, token }));
                 return { user, token };
             }
@@ -26,6 +29,7 @@ export const registerUser = createAsyncThunk(
 export const loginGoogleUser = createAsyncThunk(
     "user/google/login",
     async ({ result, token }: { result: IGoogleUser; token: string }) => {
+        delete result.googleId;
         localStorage.setItem("user", JSON.stringify({ user: result, token }));
         return { user: result, token: token };
     }
@@ -41,6 +45,9 @@ export const loginNormalUser = createAsyncThunk(
                 },
             } = await api.loginUser(credentials);
             if (status === 201) {
+                delete user.password;
+                delete user.createdAt;
+                delete user.updatedAt;
                 localStorage.setItem("user", JSON.stringify({ user, token }));
                 return { user, token };
             }
@@ -63,10 +70,11 @@ interface IAuthInitialState {
     user: IUserState | null;
 }
 
-const potentialUser = JSON.parse(localStorage.getItem("user") as string);
+const potentialUser =
+    JSON.parse(localStorage.getItem("user") as string) || null;
 
 const initialState: IAuthInitialState = {
-    user: potentialUser ? potentialUser : null,
+    user: potentialUser,
 };
 
 const authSlice = createSlice({
