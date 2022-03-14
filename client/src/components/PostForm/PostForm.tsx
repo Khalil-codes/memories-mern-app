@@ -67,7 +67,13 @@ const PostForm: FC = () => {
     const handleSubmit = (e: FormEvent<HTMLElement>) => {
         e.preventDefault();
         try {
-            dispatch(createPost({ ...postData }));
+            dispatch(
+                createPost({
+                    ...postData,
+                    author: user?.user.name,
+                    authorId: user?.user._id,
+                })
+            );
         } catch (error: any) {
             console.log(error);
         }
