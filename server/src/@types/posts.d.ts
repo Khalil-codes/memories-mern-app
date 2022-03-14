@@ -8,7 +8,6 @@ export interface IPost {
     tags: string[];
     selectedFile: string;
     likes: string[];
-    likeCount: number;
     createdAt: Date;
     updatedAt: Date;
 }

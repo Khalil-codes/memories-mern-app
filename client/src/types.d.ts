@@ -7,7 +7,6 @@ export interface IPost {
     tags: string[];
     selectedFile: string;
     likes: string[];
-    likeCount: number;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -26,7 +25,8 @@ export interface IReduxInitialState {
 }
 
 export interface IGoogleUser {
-    googleId: string;
+    _id?: string | undefined;
+    googleId?: string;
     imageUrl: string;
     email: string;
     name: string;
@@ -37,7 +37,6 @@ export interface IGoogleUser {
 export interface INormalUser {
     _id: string;
     imageUrl?: string;
-
     email: string;
     name: string;
     firstName: string;
